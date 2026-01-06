@@ -5,13 +5,13 @@ home_ip      = "your.ip.address/32"
 
 # Server
 server_name = "n8n-server-1"
-server_type = "cx23"
-location    = "hel1"
+server_type = "cx33"
+location    = "fsn1"
 image       = "ubuntu-24.04"
 username    = "yourname"
 
 # GitHub
-github_org  = "your-github-org"
+github_org  = "build-automate"
 github_repo = "n8n-production-platform"
 github_pat  = "github_pat_xxxxxxxxxxxxx"
 
