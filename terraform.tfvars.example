@@ -1,0 +1,53 @@
+# Hetzner
+hcloud_token = "your-hetzner-cloud-api-token"
+ssh_key_path = "~/.ssh/id_ed25519_n8n_dev.pub"
+home_ip      = "your.ip.address/32"
+
+# Server
+server_name = "n8n-server-1"
+server_type = "cx23"
+location    = "hel1"
+image       = "ubuntu-24.04"
+username    = "yourname"
+
+# GitHub
+github_org  = "your-github-org"
+github_repo = "n8n-production-platform"
+github_pat  = "github_pat_xxxxxxxxxxxxx"
+
+# Domain & Core
+domain = "yourdomain.com"
+
+# Security & Deployment
+enable_firewall = true
+enable_backups  = false
+wait_for_dns    = true  # Wait for DNS propagation before starting services (recommended)
+
+# Services to enable - change enabled = true/false for each service
+# Secrets list must match what's in production.env.example in the docker repo
+services = {
+  baserow = {
+    enabled = false
+    secrets = ["NOCODB_PASSWORD", "SECRET_KEY", "DATABASE_PASSWORD", "REDIS_PASSWORD", "BASEROW_S3_SECRET_KEY"]
+  }
+  nocodb = {
+    enabled = false
+    secrets = ["NOCODB_PASSWORD"]
+  }
+  minio = {
+    enabled = false
+    secrets = ["MINIO_ROOT_PASSWORD"]
+  }
+  postiz = {
+    enabled = false
+    secrets = ["POSTIZ_DB_PASSWORD", "POSTIZ_JWT_SECRET"]
+  }
+  nca-toolkit = {
+    enabled = false
+    secrets = ["NCA_API_KEY", "NCA_S3_ACCESS_KEY", "NCA_S3_SECRET_KEY"]
+  }
+  kokoro-tts = {
+    enabled = false
+    secrets = []
+  }
+}
