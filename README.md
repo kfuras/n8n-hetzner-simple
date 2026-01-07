@@ -88,8 +88,8 @@ Creates:
    While deployment runs, add DNS records pointing to the server IP (shown in output):
    ```
    A    n8n        -> <server-ip>
-   A    webhook    -> <server-ip>
    A    baserow    -> <server-ip>
+   A    nocodb     -> <server-ip>
    ```
    
    Or use wildcard: `A  *.yourdomain.com -> <server-ip>`
@@ -100,11 +100,11 @@ Creates:
 
 ## Service URLs
 
-- **N8N**: `https://n8n.yourdomain.com`
-- **N8N Webhooks**: `https://webhook.yourdomain.com`
+- **N8N**: `https://n8n.yourdomain.com` (UI and webhooks)
 - **BaseRow**: `https://baserow.yourdomain.com`
 - **NocoDB**: `https://nocodb.yourdomain.com`
 - **MinIO Console**: `https://minio-console.yourdomain.com`
+- **Postiz**: `https://postiz.yourdomain.com`
 
 All services get automatic SSL certificates from Let's Encrypt.
 
