@@ -1,22 +1,22 @@
 # Hetzner
-hcloud_token = "your-hetzner-cloud-api-token"
-ssh_key_path = "~/.ssh/id_ed25519_n8n_dev.pub"
-home_ip      = "your.ip.address/32"
+hcloud_token = "your-hetzner-cloud-api-token" # Change me
+ssh_key_path = "~/.ssh/id_ed25519_n8n_dev.pub" # Change me
+home_ip      = "your.ip.address/32" # Change me
 
 # Server
-server_name = "n8n-server-1"
+server_name = "your-server-name" # Change me
 server_type = "cx33"
 location    = "fsn1"
 image       = "ubuntu-24.04"
-username    = "yourname"
+username    = "yourname" # Change me
 
 # GitHub
 github_org  = "build-automate"
 github_repo = "n8n-production-platform"
-github_pat  = "github_pat_xxxxxxxxxxxxx"
+github_pat  = "github_pat_xxxxxxxxxxxxx" # Change me
 
 # Domain & Core
-domain = "yourdomain.com"
+domain = "yourdomain.com" # Change me
 
 # Security & Deployment
 enable_firewall = true
@@ -28,7 +28,7 @@ wait_for_dns    = true  # Wait for DNS propagation before starting services (rec
 services = {
   baserow = {
     enabled = false
-    secrets = ["NOCODB_PASSWORD", "SECRET_KEY", "DATABASE_PASSWORD", "REDIS_PASSWORD", "BASEROW_S3_SECRET_KEY"]
+    secrets = ["SECRET_KEY", "DATABASE_PASSWORD", "REDIS_PASSWORD"]
   }
   nocodb = {
     enabled = false
