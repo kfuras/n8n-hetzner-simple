@@ -7,7 +7,7 @@ HOME_IP="$3"
 SERVICES_JSON="$4"
 
 echo "Waiting for Docker and repo to be ready..."
-while ! docker ps >/dev/null 2>&1 || [ ! -d "/home/$USERNAME/stack" ]; do
+while ! docker ps >/dev/null 2>&1 || [ ! -f "/home/$USERNAME/stack/secrets/production.env.example" ]; do
   sleep 2
 done
 echo "System ready"
@@ -16,6 +16,9 @@ echo "System ready"
 if [ ! -f /home/$USERNAME/stack/.env ]; then
   cp /home/$USERNAME/stack/secrets/production.env.example /home/$USERNAME/stack/.env
   chmod 600 /home/$USERNAME/stack/.env
+  
+  # Remove example warning since all secrets are auto-generated
+  sed -i '/# The below is for example purposes only/d' /home/$USERNAME/stack/.env
   
   sed -i "s|DOMAIN=yourdomain.com|DOMAIN=$DOMAIN|g" /home/$USERNAME/stack/.env
   sed -i "s|HOME_IP=192.168.1.100|HOME_IP=$HOME_IP|g" /home/$USERNAME/stack/.env
@@ -26,8 +29,9 @@ if [ ! -f /home/$USERNAME/stack/.env ]; then
   sed -i "s|N8N_BASIC_AUTH_PASSWORD=.*|N8N_BASIC_AUTH_PASSWORD=$(openssl rand -base64 18 | tr -d '/+=')|g" /home/$USERNAME/stack/.env
   sed -i "s|POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=$(openssl rand -base64 24 | tr -d '/+=')|g" /home/$USERNAME/stack/.env
   
-  # Service secrets
-  echo "$SERVICES_JSON" | jq -r 'to_entries[] | select(.value.enabled) | .value.secrets[] | @text' | while read secret; do
+  # Generate ALL service secrets upfront (regardless of enabled status)
+  # This ensures secure passwords even if services are enabled later
+  echo "$SERVICES_JSON" | jq -r '.[] | .secrets[] | @text' | sort -u | while read secret; do
     sed -i "s|${secret}=.*|${secret}=$(openssl rand -base64 24 | tr -d '/+=')|g" /home/$USERNAME/stack/.env
   done
   
