@@ -1,7 +1,13 @@
-# Upload SSH key
+# Upload SSH keys
 resource "hcloud_ssh_key" "main" {
-  name       = "${var.server_name}-key"
+  name       = "${var.server_name}-main-key"
   public_key = file(var.ssh_key_path)
+}
+
+resource "hcloud_ssh_key" "extra" {
+  count      = length(var.extra_ssh_keys)
+  name       = "${var.server_name}-${element(split(" ", var.extra_ssh_keys[count.index]), 2)}-key"
+  public_key = var.extra_ssh_keys[count.index]
 }
 
 # Firewall rules
@@ -36,11 +42,11 @@ resource "hcloud_firewall" "main" {
 # Generate cloud-init script
 locals {
   cloud_init_content = templatefile("${path.module}/cloud-init.yaml", {
-    username       = var.username
-    ssh_public_key = file(var.ssh_key_path)
-    github_org     = var.github_org
-    github_repo    = var.github_repo
-    github_pat     = var.github_pat
+    username        = var.username
+    ssh_public_keys = concat([file(var.ssh_key_path)], var.extra_ssh_keys)
+    github_org      = var.github_org
+    github_repo     = var.github_repo
+    github_pat      = var.github_pat
   })
 
   # Build sed commands: uncomment enabled services, comment disabled ones
@@ -73,7 +79,7 @@ resource "hcloud_server" "main" {
   image       = var.image
   server_type = var.server_type
   location    = var.location
-  ssh_keys    = [hcloud_ssh_key.main.id]
+  ssh_keys    = concat([hcloud_ssh_key.main.id], hcloud_ssh_key.extra[*].id)
   backups     = var.enable_backups
   user_data   = local.cloud_init_content
 
