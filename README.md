@@ -27,7 +27,7 @@ All services automatically configured with your domain and secured behind Traefi
    - Windows: `winget install --exact --id=OpenTofu.Tofu`
    - Linux: [opentofu.org/docs/intro/install](https://opentofu.org/docs/intro/install)
 3. **GitHub Personal Access Token** with read access to your private repo
-4. **SSH key pair** for server access
+4. **SSH key pair** for server access (additional keys can be added for team members)
 5. **Domain name** with access to DNS settings
 
 ### Creating an SSH Key Pair
@@ -64,8 +64,14 @@ Creates:
    github_org   = "build-automate"
    github_repo  = "n8n-production-platform"
    github_pat   = "github_pat_xxxxx"
-   
+
    domain       = "yourdomain.com"
+
+   # Optional: additional SSH keys for team members
+   extra_ssh_keys = [
+     "ssh-ed25519 AAAA... team-member-1",
+     "ssh-ed25519 AAAA... team-member-2"
+   ]
    
    services = {
      baserow = {
@@ -145,7 +151,7 @@ Run `tofu apply` to apply changes.
 ## Security Features
 
 - **Network**: SSH restricted to your IP, fail2ban protection
-- **SSH**: Root login disabled, key-only authentication
+- **SSH**: Root login disabled, key-only authentication, multiple keys supported
 - **Secrets**: Auto-generated on server using `openssl rand`, never in Terraform state
 - **Docker**: Log rotation configured (10MB max, 3 files)
 
