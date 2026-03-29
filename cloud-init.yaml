@@ -8,6 +8,7 @@ users:
 
 packages:
   - fail2ban
+  - ufw
   - ca-certificates
   - curl
   - gnupg
@@ -67,6 +68,14 @@ runcmd:
   - systemctl start docker
   - usermod -aG docker ${username}
 
+  # UFW Firewall setup
+  - ufw default deny incoming
+  - ufw default allow outgoing
+  - ufw allow 22/tcp
+  - ufw allow 80/tcp
+  - ufw allow 443/tcp
+  - ufw --force enable
+
   # Create stack directory in user home
   - mkdir -p /home/${username}/stack
   - chown -R ${username}:${username} /home/${username}/stack
@@ -88,6 +97,11 @@ runcmd:
       chmod 600 /home/${username}/stack/postiz.env
       chown ${username}:${username} /home/${username}/stack/postiz.env
     fi
+
+  # OpenClaw setup — directories only, config is handled by Terraform provisioner
+  - mkdir -p /home/${username}/.openclaw/workspace
+  - mkdir -p /home/${username}/.openclaw/youtube-mcp
+  - chown -R 1000:1000 /home/${username}/.openclaw
 
   # Start Docker services (will be handled by provisioner after file copy)
   # - cd /home/${username}/stack && docker compose up -d

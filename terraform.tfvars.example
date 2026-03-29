@@ -6,7 +6,7 @@ ssh_key_path   = "~/.ssh/id_ed25519_n8n_dev.pub" # Change me
 #   "ssh-ed25519 AAAA... second-key"
 # ]
 
-home_ip      = "your.ip.address/32" # Change me
+ssh_allowed_ips = ["your.ip.address/32"] # Change me - IPs allowed SSH access
 
 # Server
 server_name = "your-server-name" # Change me

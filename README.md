@@ -55,7 +55,7 @@ Creates:
    ```terraform
    hcloud_token = "your-hetzner-api-token"
    ssh_key_path = "~/.ssh/id_ed25519_n8n_dev.pub"
-   home_ip      = "your.ip.address/32"  # Get with: curl ifconfig.co
+   ssh_allowed_ips = ["your.ip.address/32"]  # Get with: curl ifconfig.co
    server_name  = "n8n-server-1"
    username     = "yourname"
    

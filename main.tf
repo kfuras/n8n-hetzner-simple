@@ -19,7 +19,7 @@ resource "hcloud_firewall" "main" {
     direction   = "in"
     port        = "22"
     protocol    = "tcp"
-    source_ips  = [var.home_ip]
+    source_ips  = var.ssh_allowed_ips
   }
 
   rule {
@@ -108,7 +108,7 @@ resource "null_resource" "wait_for_dns" {
   triggers = {
     server_id = hcloud_server.main.id
     domain    = var.domain
-    home_ip   = var.home_ip
+    ssh_ips   = jsonencode(var.ssh_allowed_ips)
     services  = jsonencode(var.services)
   }
 
@@ -128,7 +128,7 @@ resource "null_resource" "copy_env_file" {
   triggers = {
     server_id = hcloud_server.main.id
     domain    = var.domain
-    home_ip   = var.home_ip
+    ssh_ips   = jsonencode(var.ssh_allowed_ips)
     services  = jsonencode(var.services)
   }
 
@@ -148,7 +148,7 @@ resource "null_resource" "copy_env_file" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/configure-services.sh",
-      "/tmp/configure-services.sh '${var.username}' '${var.domain}' '${replace(var.home_ip, "/32", "")}' '${jsonencode(var.services)}'"
+      "/tmp/configure-services.sh '${var.username}' '${var.domain}' '${replace(var.ssh_allowed_ips[0], "/32", "")}' '${jsonencode(var.services)}'"
     ]
 
     connection {
@@ -157,6 +157,68 @@ resource "null_resource" "copy_env_file" {
       private_key = file(replace(var.ssh_key_path, ".pub", ""))
       host        = hcloud_server.main.ipv4_address
       timeout     = "5m"
+    }
+  }
+}
+
+# Deploy OpenClaw (Docker with baked-in MCP servers)
+resource "null_resource" "openclaw_setup" {
+  depends_on = [null_resource.copy_env_file]
+
+  triggers = {
+    server_id = hcloud_server.main.id
+  }
+
+  provisioner "remote-exec" {
+    inline = ["mkdir -p /tmp/openclaw-config"]
+
+    connection {
+      type        = "ssh"
+      user        = var.username
+      private_key = file(replace(var.ssh_key_path, ".pub", ""))
+      host        = hcloud_server.main.ipv4_address
+      timeout     = "5m"
+    }
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/openclaw/docker-compose.yml"
+    destination = "/tmp/openclaw-config/docker-compose.yml"
+
+    connection {
+      type        = "ssh"
+      user        = var.username
+      private_key = file(replace(var.ssh_key_path, ".pub", ""))
+      host        = hcloud_server.main.ipv4_address
+      timeout     = "5m"
+    }
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/setup-openclaw.sh"
+    destination = "/tmp/setup-openclaw.sh"
+
+    connection {
+      type        = "ssh"
+      user        = var.username
+      private_key = file(replace(var.ssh_key_path, ".pub", ""))
+      host        = hcloud_server.main.ipv4_address
+      timeout     = "5m"
+    }
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/setup-openclaw.sh",
+      "/tmp/setup-openclaw.sh '${var.username}'"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = var.username
+      private_key = file(replace(var.ssh_key_path, ".pub", ""))
+      host        = hcloud_server.main.ipv4_address
+      timeout     = "15m"
     }
   }
 }

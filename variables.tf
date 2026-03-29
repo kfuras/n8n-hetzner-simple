@@ -58,9 +58,9 @@ variable "wait_for_dns" {
   default     = true
 }
 
-variable "home_ip" {
-  description = "Your home IP for SSH access"
-  type        = string
+variable "ssh_allowed_ips" {
+  description = "List of IPs allowed SSH access (CIDR format, e.g. 1.2.3.4/32)"
+  type        = list(string)
 }
 
 variable "username" {

@@ -1,0 +1,33 @@
+services:
+  openclaw-gateway:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - HOME=/home/node
+      - NODE_ENV=production
+      - TERM=xterm-256color
+      - OPENCLAW_GATEWAY_BIND=${OPENCLAW_GATEWAY_BIND}
+      - OPENCLAW_GATEWAY_PORT=${OPENCLAW_GATEWAY_PORT}
+      - OPENCLAW_GATEWAY_TOKEN=${OPENCLAW_GATEWAY_TOKEN}
+      - GOG_KEYRING_PASSWORD=${GOG_KEYRING_PASSWORD}
+      - XDG_CONFIG_HOME=/home/node/.openclaw
+      - PATH=/opt/youtube-mcp/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    volumes:
+      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
+      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
+      - ${OPENCLAW_CONFIG_DIR}/skills:/app/skills
+      - ${OPENCLAW_CONFIG_DIR}/youtube-mcp:/home/node/.youtube-mcp
+    ports:
+      - "127.0.0.1:${OPENCLAW_GATEWAY_PORT}:18789"
+    command:
+      [
+        "openclaw",
+        "gateway",
+        "--bind",
+        "${OPENCLAW_GATEWAY_BIND}",
+        "--port",
+        "${OPENCLAW_GATEWAY_PORT}",
+        "--allow-unconfigured",
+      ]

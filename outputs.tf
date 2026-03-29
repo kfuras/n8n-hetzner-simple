@@ -27,3 +27,8 @@ output "domain" {
   description = "Domain name for services"
   value       = var.domain
 }
+
+output "openclaw_tunnel" {
+  description = "SSH tunnel command for OpenClaw Control UI"
+  value       = "ssh -N -L 18789:127.0.0.1:18789 -i ${replace(var.ssh_key_path, ".pub", "")} ${var.username}@${hcloud_server.main.ipv4_address}"
+}
