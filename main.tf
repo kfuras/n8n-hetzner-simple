@@ -46,7 +46,6 @@ locals {
     ssh_public_keys = concat([file(var.ssh_key_path)], var.extra_ssh_keys)
     github_org      = var.github_org
     github_repo     = var.github_repo
-    github_pat      = var.github_pat
   })
 
   # Build sed commands: uncomment enabled services, comment disabled ones

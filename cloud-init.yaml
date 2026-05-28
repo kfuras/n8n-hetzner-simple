@@ -71,9 +71,9 @@ runcmd:
   - mkdir -p /home/${username}/stack
   - chown -R ${username}:${username} /home/${username}/stack
 
-  # Clone Docker repo using GitHub PAT
+  # Clone Docker repo
   - |
-    sudo -u ${username} git clone https://x-access-token:${github_pat}@github.com/${github_org}/${github_repo}.git /home/${username}/stack
+    sudo -u ${username} git clone https://github.com/${github_org}/${github_repo}.git /home/${username}/stack
 
   # Copy pre-generated env files (if they exist)
   - |

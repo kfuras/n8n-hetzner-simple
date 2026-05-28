@@ -25,9 +25,8 @@ All services automatically configured with your domain and secured behind Traefi
    - macOS: `brew install opentofu`
    - Windows: `winget install --exact --id=OpenTofu.Tofu`
    - Linux: [opentofu.org/docs/intro/install](https://opentofu.org/docs/intro/install)
-3. **GitHub Personal Access Token** with read access to your private repo
-4. **SSH key pair** for server access (additional keys can be added for team members)
-5. **Domain name** with access to DNS settings
+3. **SSH key pair** for server access (additional keys can be added for team members)
+4. **Domain name** with access to DNS settings
 
 ### Creating an SSH Key Pair
 
@@ -62,7 +61,6 @@ Creates:
    
    github_org   = "kfuras"
    github_repo  = "n8n-production-platform"
-   github_pat   = "github_pat_xxxxx"
 
    domain       = "yourdomain.com"
 
