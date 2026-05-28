@@ -4,7 +4,6 @@
 [![Hetzner](https://img.shields.io/badge/Hetzner-D50C2D?style=for-the-badge&logo=hetzner&logoColor=white)](https://console.hetzner.com/)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docs.docker.com/)
 [![N8N](https://img.shields.io/badge/n8n-EA4B71?style=for-the-badge&logo=n8n&logoColor=white)](https://n8n.io/)
-[![Skool Community](https://img.shields.io/badge/Skool-Build_&_Automate-FF6154?style=for-the-badge)](https://www.skool.com/build-automate)
 
 Deploy a complete N8N automation platform with optional companion services on Hetzner Cloud. Fully automated deployment with SSL certificates, security hardening, and modular architecture.
 
@@ -44,7 +43,7 @@ Creates:
 
 1. **Clone this repository**
    ```bash
-   git clone https://github.com/build-automate/n8n-hetzner-simple.git
+   git clone https://github.com/kfuras/n8n-hetzner-simple.git
    cd n8n-hetzner-simple
    ```
 
@@ -61,7 +60,7 @@ Creates:
    server_name  = "n8n-server-1"
    username     = "yourname"
    
-   github_org   = "build-automate"
+   github_org   = "kfuras"
    github_repo  = "n8n-production-platform"
    github_pat   = "github_pat_xxxxx"
 
@@ -203,10 +202,6 @@ ssh user@server "docker compose -f ~/stack/docker-compose.yml logs traefik | gre
 **Full Stack** (All services, cx53): ~$18.99/month
 
 Includes 20TB traffic. Add ~20% for backups if enabled.
-
-## Support
-
-Questions? Join the [Build & Automate community](https://www.skool.com/build-automate) on Skool.
 
 ## License
 

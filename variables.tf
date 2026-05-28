@@ -73,7 +73,7 @@ variable "username" {
 variable "github_org" {
   description = "GitHub organization"
   type        = string
-  default     = "build-automate"
+  default     = "kfuras"
 }
 
 variable "github_repo" {
