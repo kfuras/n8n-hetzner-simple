@@ -47,7 +47,6 @@ cp /tmp/openclaw-config/docker-compose.yml "$OPENCLAW_DIR/docker-compose.yml"
 # Generate .env if it doesn't exist
 if [ ! -f "$ENV_FILE" ]; then
   GATEWAY_TOKEN=$(openssl rand -hex 32)
-  KEYRING_PASSWORD=$(openssl rand -hex 32)
 
   cat > "$ENV_FILE" <<EOF
 OPENCLAW_GATEWAY_TOKEN=$GATEWAY_TOKEN
@@ -55,7 +54,6 @@ OPENCLAW_GATEWAY_BIND=lan
 OPENCLAW_GATEWAY_PORT=18789
 OPENCLAW_CONFIG_DIR=$CONFIG_DIR
 OPENCLAW_WORKSPACE_DIR=$CONFIG_DIR/workspace
-GOG_KEYRING_PASSWORD=$KEYRING_PASSWORD
 DISCORD_BOT_TOKEN=REPLACE_ME
 EOF
   chmod 600 "$ENV_FILE"
@@ -75,6 +73,8 @@ if [ ! -f "$CONFIG_DIR/openclaw.json" ]; then
   cat > "$CONFIG_DIR/openclaw.json" <<'OCJSON'
 {
   "gateway": {
+    "mode": "local",
+    "bind": "lan",
     "controlUi": {
       "allowedOrigins": ["http://localhost:18789", "http://127.0.0.1:18789"]
     }
